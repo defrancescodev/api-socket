@@ -19,13 +19,18 @@ public class Handler implements Runnable {
             exit = new PrintWriter(socket.getOutputStream(), true);
             ServerChat.connectedClients.add(exit);
 
+
+            String dispositivoInfo = socket.getRemoteSocketAddress().toString();
+            System.out.println("Novo dispositivo conectado: " + dispositivoInfo);
+
             String mensagem;
             while ((mensagem = input.readLine()) != null) {
-                System.out.println("Mensagem: " + mensagem);
-                transmitirParaTodos(mensagem);
+                // Mostra no ServerChat qual o dispositivo específico enviou a mensagem
+                System.out.println("Mensagem de [" + dispositivoInfo + "]: " + mensagem);
+                transmitirParaTodos("[" + dispositivoInfo + "]: " + mensagem);
             }
         } catch (Exception e) {
-            System.out.println("Cliente desconectado.");
+            System.out.println("Dispositivo desconectado.");
             e.printStackTrace();
         } finally {
             if (exit != null) {
